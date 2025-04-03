@@ -58,10 +58,6 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # URL for your Vite React app
-]
-
 ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [
