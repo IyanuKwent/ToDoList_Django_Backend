@@ -1,25 +1,58 @@
-from django.shortcuts import render
-from django.http import JsonResponse  # Import JsonResponse for the home view
-
-from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from .models import Task
 from .serializers import TaskSerializer
-from rest_framework.decorators import api_view
 
-def home_view(request):
-    """Return a welcome message."""
-    return JsonResponse({'message': 'Welcome to the API!'})  # Simple welcome message
+# Get all tasks
+class TaskListView(APIView):
+    def get(self, request):
+        tasks = Task.objects.all()
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data)
 
-@api_view(['POST'])
-def add_task(request):
-    if request.method == 'POST':
+# Add a task
+class AddTaskView(APIView):
+    def post(self, request):
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  # Save the new task to the database
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TaskViewSet(viewsets.ModelViewSet):
+# Update a task
+class UpdateTaskView(APIView):
+    def put(self, request, id):
+        try:
+            task = Task.objects.get(id=id)
+        except Task.DoesNotExist:
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+        serializer = TaskSerializer(task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Delete a task
+class DeleteTaskView(APIView):
+    def delete(self, request, id):
+        try:
+            task = Task.objects.get(id=id)
+            task.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Task.DoesNotExist:
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
+
+# Toggle task completion
+class ToggleTaskView(APIView):
+    def put(self, request, id):
+        try:
+            task = Task.objects.get(id=id)
+        except Task.DoesNotExist:
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        task.completed = not task.completed
+        task.save()
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)
