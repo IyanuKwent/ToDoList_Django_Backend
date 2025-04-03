@@ -1,10 +1,9 @@
 from django.urls import path
-from . import views
-
+from .views import get_tasks, add_task, delete_task, update_task
 
 urlpatterns = [
-    path('tasks/', views.get_tasks, name='get_tasks'),
-    path('tasks/add/', views.add_task, name='add_task'),
-    path('tasks/<int:pk>/delete/', views.delete_task, name='delete_task'),
-    path('tasks/<int:pk>/update/', views.update_task, name='update_task'),
+    path('', get_tasks, name='get_tasks'),  # Matches '/api/'
+    path('add/', add_task, name='add_task'),  # Matches '/api/add/'
+    path('delete/<int:pk>/', delete_task, name='delete_task'),
+    path('update/<int:pk>/', update_task, name='update_task'),
 ]
