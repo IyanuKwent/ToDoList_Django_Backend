@@ -5,7 +5,6 @@ from myapp.views import TaskViewSet
 router = DefaultRouter()
 router.register(r'tasks', TaskViewSet)
 
-
 urlpatterns = [
-    path('api/tasks/', include('myapp.urls')),  # Correct URL
+    path('api/', include(router.urls)),
 ]
