@@ -31,6 +31,7 @@ DEBUG = True
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
+
 # Application definition
 
 INSTALLED_APPS = [
