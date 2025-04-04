@@ -14,8 +14,8 @@ def index(request):
 
 # URL patterns
 urlpatterns = [
-    path('', index),  # root index
+    path('', index),  # Root index
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),  # REST API: /api/tasks/
-    path('api-auth/', include('rest_framework.urls')),  # optional login/logout
+    path('api/', include(router.urls)),  # Register the TaskViewSet for /api/tasks/
+    path('api-auth/', include('rest_framework.urls')),  # Optional login/logout
 ]
