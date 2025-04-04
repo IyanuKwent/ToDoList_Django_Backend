@@ -28,8 +28,9 @@ SECRET_KEY = 'django-insecure-1z3!9)0rjrshc*vbt%q*^t9*42yqe-*od1o&cz$e+c@u#!waji
 #DEBUG = True
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-#ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'todolist-django-backend.onrender.com']
+
+#ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
 CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADD THIS LINE
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,7 +153,12 @@ REST_FRAMEWORK = {
 
 
 
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where static files will be collected
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
