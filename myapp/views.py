@@ -1,15 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import viewsets
 from .models import Task
 from .serializers import TaskSerializer
 
-
-class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-    
 # Get all tasks
 class TaskListView(APIView):
     def get(self, request):
@@ -18,7 +12,7 @@ class TaskListView(APIView):
         return Response(serializer.data)
 
 # Add a task
-class AddTaskView(APIView):
+class TaskCreateView(APIView):
     def post(self, request):
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,10 +21,10 @@ class AddTaskView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Update a task
-class UpdateTaskView(APIView):
-    def put(self, request, id):
+class TaskUpdateView(APIView):
+    def put(self, request, pk):
         try:
-            task = Task.objects.get(id=id)
+            task = Task.objects.get(pk=pk)
         except Task.DoesNotExist:
             return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -41,20 +35,20 @@ class UpdateTaskView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Delete a task
-class DeleteTaskView(APIView):
-    def delete(self, request, id):
+class TaskDeleteView(APIView):
+    def delete(self, request, pk):
         try:
-            task = Task.objects.get(id=id)
+            task = Task.objects.get(pk=pk)
             task.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Task.DoesNotExist:
             return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
 
 # Toggle task completion
-class ToggleTaskView(APIView):
-    def put(self, request, id):
+class TaskToggleView(APIView):
+    def put(self, request, pk):
         try:
-            task = Task.objects.get(id=id)
+            task = Task.objects.get(pk=pk)
         except Task.DoesNotExist:
             return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
 
