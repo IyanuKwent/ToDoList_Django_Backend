@@ -30,9 +30,6 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'todolist-django-backend.onrender.com']
 
-#ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
-
-CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,16 +47,14 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADD THIS LINE
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADD THIS LINE for serving static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -87,7 +82,6 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",
 ]
 
-
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 
@@ -102,7 +96,6 @@ DATABASES = {
 }
 
 DATABASES['default'] = dj_database_url.parse("postgresql://todolist_mrs8_user:5rpvehyUYPTlghrMS2mSdPoMn0veB37F@dpg-cvn7onadbo4c73bg1p3g-a.singapore-postgres.render.com/todolist_mrs8")
-
 
 
 # Password validation
@@ -147,17 +140,14 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # 👈 Make sure this is here
+        'rest_framework.renderers.BrowsableAPIRenderer',  # 👈 Make sure this is here for browsable API
     ],
 }
 
-
-
-
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where static files will be collected during deployment
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),  # Additional static directories for your project
 ]
 
 # Default primary key field type
@@ -169,4 +159,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://effortless-speculoos-4dcbe2.netlify.app",
 ]
+
+# Add your server's allowed origins here as well
+CORS_ALLOW_ALL_ORIGINS = True
 
