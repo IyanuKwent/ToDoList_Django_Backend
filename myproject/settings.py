@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # ADD THIS LINE for serving static files
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -159,6 +159,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://effortless-speculoos-4dcbe2.netlify.app",
 ]
+
 
 # Add your server's allowed origins here as well
 CORS_ALLOW_ALL_ORIGINS = True
