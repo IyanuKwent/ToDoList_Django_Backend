@@ -162,6 +162,3 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# Add your server's allowed origins here as well
-CORS_ALLOW_ALL_ORIGINS = True
-
