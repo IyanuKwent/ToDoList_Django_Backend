@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'myapp', 
     'rest_framework.authtoken',
-    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
